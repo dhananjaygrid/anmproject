@@ -4,7 +4,7 @@ import time
 import datetime
 import threading
 import sqlite3
-#switch = ['192.168.184.23','192.168.184.98']
+
 
 class switch_threads(threading.Thread):
     def __init__(self, ip, community, version, port):
@@ -68,28 +68,39 @@ class switch_threads(threading.Thread):
 
             j = 0
             for name in port_name: 
-                print "mac address:", macs[j],"port", name,"\n",           
+                print "mac address:", macs[j],"port", name,"\n",  
+                cnx.execute("INSERT INTO List VALUES(NULL,?,NULL,?,?)",(self.ip,name,macs[j]));           
                 j = j + 1
-           
+            cnx.commit()
             time.sleep(60)
             
 conn = sqlite3.connect('project.db', timeout=10)
 #conn.row_factory = lambda cursor, row: row[0]
 c = conn.cursor()
+c.execute("CREATE TABLE IF NOT EXISTS list (ID INTEGER PRIMARY KEY AUTOINCREMENT, DEVICE_IP varchar(30), VLAN_ID varchar(30), PORT varchar(30), MACS varchar(100))")
+conn.commit()
 
-c.execute("SELECT * FROM Devices")
-device = c.fetchall()            
-threads = []
 
-for cred in device:    
-    ip = cred[1]
-    community= cred[2]
-    version = int(cred[4])
-    port = cred[3]
-    thread = switch_threads(ip, community, version, port) 
-    thread.start()
-    threads.append(thread)
-for t in threads:
-    t.join()
+length = c.execute("SELECT COUNT(*) FROM Devices")
+empty = length.fetchall()
+check = str((0,))
+q = c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name = 'DEVICES'")
+present = len( q.fetchall())           
+
+if str(empty != check) or (present) != 0:
+    c.execute("SELECT * FROM Devices")
+    device = c.fetchall() 
+    threads = []
+
+    for cred in device:    
+        ip = cred[1]
+        community= cred[2]
+        version = int(cred[4])
+        port = cred[3]
+        thread = switch_threads(ip, community, version, port) 
+        thread.start()
+        threads.append(thread)
+    for t in threads:
+        t.join()
 
 
