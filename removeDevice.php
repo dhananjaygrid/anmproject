@@ -30,11 +30,21 @@ EOF;
    $ret1 = $db->query($sql1);	
    if(!$ret1){
      echo $db->lastErrorMsg();
-   } else {
+   } 
+   $sql2 = <<<EOF
+             DELETE FROM Status WHERE ID = "$id";
+EOF;
+   $ret2 = $db->query($sql2);
+if(!$ret2){
+     echo $db->lastErrorMsg();	
+  }	
+    else {
       echo "OK";
-   }	
-  }
-  $db->close();
+   }
+  
+  } 
 }
+  $db->close();
+
 
 ?>

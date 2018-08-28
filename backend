@@ -1,29 +1,38 @@
+#!/usr/bin/python
 from easysnmp import Session
 import time
 import datetime
 import threading
-
-switch = ['192.168.184.23','192.168.184.98']
+import sqlite3
+#switch = ['192.168.184.23','192.168.184.98']
 
 class switch_threads(threading.Thread):
-    def __init__(self, ip):
+    def __init__(self, ip, community, version, port):
         threading.Thread.__init__(self)
         self.ip = ip
+        self.community = community
+        self.version = version
+        self.port = port
         
     def run(self):
         while True:
             failed_attempts = 0
             try:
-                session = Session(hostname=self.ip, community = 'public', version=1, timeout =5, retries=3)
+                session = Session(hostname=self.ip, community = self.community, version = self.version, timeout =5, retries=2)
             except easysnmp.exceptions.EasySNMPTimeoutError:
                 failed_attempts = failed_attempts +1 
 
-            session = Session(hostname=self.ip, community = 'public', version=1)
+            
             time_ = int(time.time())
             probe_time = datetime.datetime.utcfromtimestamp(time_).strftime('%Y-%m-%d %H:%M:%S')
-            #new_probe = (datetime.timedelta(seconds=60))
             next_probe = datetime.datetime.now() + datetime.timedelta(seconds=60)
+            cnx = sqlite3.Connection('project.db', timeout=10)
+            cur = cnx.cursor()
+            params = (self.ip, self.port, self.community, self.version, probe_time, next_probe, failed_attempts, self.ip)
+            cur.execute('''UPDATE Status SET IP = ?, PORT = ?, COMMUNITY = ?, VERSION = ?, FIRST_PROBE = ?, LATEST_PROBE = ?, Failed_attempts=? WHERE IP = ? ''', params)
+
             print "connected to switch",self.ip, "at time",probe_time,"\n", 
+            cnx.commit()
             test_all = session.walk('1.3.6.1.2.1.17.4')
             ports = session.walk('IF-MIB::ifName')
             oid_index_ = []
@@ -58,18 +67,29 @@ class switch_threads(threading.Thread):
 #print port_name
 
             j = 0
-            for name in port_name:
- #   if index in 
+            for name in port_name: 
                 print "mac address:", macs[j],"port", name,"\n",           
                 j = j + 1
-            #print "\n","next probe time",next_probe, "\n"
+           
             time.sleep(60)
             
+conn = sqlite3.connect('project.db', timeout=10)
+#conn.row_factory = lambda cursor, row: row[0]
+c = conn.cursor()
+
+c.execute("SELECT * FROM Devices")
+device = c.fetchall()            
 threads = []
-for ip in switch:
-    thread = switch_threads(ip)
+
+for cred in device:    
+    ip = cred[1]
+    community= cred[2]
+    version = int(cred[4])
+    port = cred[3]
+    thread = switch_threads(ip, community, version, port) 
     thread.start()
     threads.append(thread)
 for t in threads:
     t.join()
+
 
