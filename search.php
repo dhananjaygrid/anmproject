@@ -7,19 +7,26 @@ if (empty($_GET)){
   }
 else {
   $search = htmlspecialchars($_GET["mac"]);
-  $query = str_replace("|","", $search);
+  
   
   $sql = <<<EOF
-              SELECT * FROM List WHERE LIKE ('$query',MACS) = 1;
+              SELECT * FROM List WHERE LIKE ('$search',MACS) = 1;
 EOF;
 
   $output = $db->query($sql);
+  $data = array(); 
   while($row = $output->fetchArray() ){
-         $data = array($row[1]. "|" . $row[2] . "|" . $row[3] . "|" . $row[4]);
+         
+         #echo $row[1]. "|" . $row[2] . "|" . $row[3] . "|" . $row[4] . "\n";
+         $data[] = $row[1]. "|" . $row[2] . "|" . $row[3] . "|" . $row[4];
      
    }
- 
-echo $data[0];
+
+$result = array_unique($data);
+$length = count($result);
+for($i = 0; $i < $length; $i++){
+    echo $result[$i]. "\n";
+}
 }
 $db->close();
 ?>
