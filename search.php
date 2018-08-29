@@ -22,6 +22,16 @@ EOF;
      
    }
 
+$check = count($data);
+if ($check ==0){
+
+$count = $db->query('SELECT count(*) FROM Devices');
+while($heavy = $count->fetchArray(SQLITE3_ASSOC)) {
+   
+        $number_devices = $heavy['count(*)'];
+        echo "No Match in $number_devices Devices";
+     }
+}
 $result = array_unique($data);
 $length = count($result);
 for($i = 0; $i < $length; $i++){
