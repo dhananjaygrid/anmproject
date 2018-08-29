@@ -24,8 +24,8 @@ class switch_threads(threading.Thread):
 
             
             time_ = int(time.time())
-            probe_time = datetime.datetime.utcfromtimestamp(time_).strftime('%Y-%m-%d %H:%M:%S')
-            next_probe = datetime.datetime.now() + datetime.timedelta(seconds=60)
+            probe_time = datetime.datetime.utcfromtimestamp(time_)
+            next_probe = probe_time + datetime.timedelta(seconds=60)
             cnx = sqlite3.Connection('project.db', timeout=10)
             cur = cnx.cursor()
             params = (self.ip, self.port, self.community, self.version, probe_time, next_probe, failed_attempts, self.ip)
@@ -48,7 +48,11 @@ class switch_threads(threading.Thread):
                 if (type_ == 'INTEGER' and "mib-2.17.4.3.1.2" in oid):
         #print test_all[i]
                     oid_index_.append(test_all[i].value)
- 
+
+            change = 0
+            for change in range(len(oid_index_)):
+                if (oid_index_[change] == u'0'):
+                    oid_index_[change] = str(1).decode('UTF-8')
             macs = [(':'.join('%02x' % ord(b) for b in mac)) for mac in macs]
             dict = {}
             for k in range(len(macs)):
@@ -68,8 +72,8 @@ class switch_threads(threading.Thread):
 
             j = 0
             for name in port_name: 
-                print "mac address:", macs[j],"port", name,"\n",  
-                cnx.execute("INSERT INTO List VALUES(NULL,?,NULL,?,?)",(self.ip,name,macs[j]));           
+                print "mac address:", macs[j], "vlan:", oid_index_[j],"port", name,"\n",  
+                cnx.execute("INSERT INTO List VALUES(NULL,?,?,?,?)",(self.ip,oid_index_[j],name,macs[j]));           
                 j = j + 1
             cnx.commit()
             time.sleep(60)
