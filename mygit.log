@@ -1,0 +1,83 @@
+commit 10a5914063f4e03d23bb13054fb56e5395c41c5e
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Wed Aug 29 15:43:59 2018 +0000
+
+    search.php mods
+
+commit 1dccd47cb8fac5c7f0504c2c1b6436059fbf52f6
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Wed Aug 29 15:10:56 2018 +0000
+
+    search.php modifications
+
+commit ad62d21ddd4c4fc3ce1b80d98c84375e98488cb7
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Wed Aug 29 13:57:52 2018 +0000
+
+    search.php
+
+commit 877e6d11338313572d9ef730df651a25bb7bdbe6
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Wed Aug 29 09:09:53 2018 +0000
+
+    edits to backend
+
+commit ee533b70361a656245d16bcbefde846d8fb79ee2
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Wed Aug 29 07:17:34 2018 +0000
+
+    list.php
+
+commit 0982ab001c4b982ada8f668a461a4b8f0694c3d9
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Tue Aug 28 13:10:56 2018 +0000
+
+    backend modification
+
+commit 0cde98985223e4d0ded3e45dd4dfa2bfc1d22db8
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Tue Aug 28 12:05:50 2018 +0000
+
+    list devs updated
+
+commit c87d71c063318cb2e87bdb6e0cda8e75fc307df4
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Tue Aug 28 11:16:47 2018 +0000
+
+    insert device status into db and some modifications to php files
+
+commit 06bb3d86f1e783fd76db75b7511cceb2e4d58f60
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Sun Aug 26 06:49:37 2018 +0000
+
+    backend
+
+commit e550ec94e13acf714c4e674f2dd7070e7d298044
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Wed Jul 18 17:02:03 2018 +0000
+
+    New snmp module which probes devices for MAC ports
+
+commit e7d85b1707915455898ff9c104ee7809872a1687
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Mon Jun 25 15:21:53 2018 +0000
+
+    Modified according to OK or FALSE
+
+commit 6c24d279f134c198189db7307d80eaedba426b90
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Mon Jun 25 14:40:53 2018 +0000
+
+    Remove Device
+
+commit 069239ef93cbb06176a752a51967972f2f9bac99
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Fri Jun 22 14:11:58 2018 +0000
+
+    configuration file
+
+commit 819ed116005574d5c9b54735ac7e543a4860e394
+Author: dhananjaygrid <dhananjay.grid@hotmail.com>
+Date:   Fri Jun 22 14:01:27 2018 +0000
+
+    php file that adds devices to sqlite3 aling with config php file
